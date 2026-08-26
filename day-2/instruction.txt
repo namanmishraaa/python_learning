@@ -1,0 +1,8 @@
+# install UV
+uv python install 3.12
+
+# Pin python 3.12 version
+uv python pin 3.12
+
+# Command to create enviornment
+uv venv
