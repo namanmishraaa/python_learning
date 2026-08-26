@@ -9,18 +9,14 @@ def crunch_number():
         count +=1 
     print(f"finished brewing....")
 
-start = time.time()
 
-p1=Process(target=crunch_number)
-p2= Process(target=crunch_number)
-
-
-p1.start()
-p2.start()
-p1.join()
-p2.join()
-
-end = time.time()
-
-
-print(f"Total time take : {end - start:.2f} second")
+if __name__ == "__main__":
+    start = time.time()
+    p1=Process(target=crunch_number)
+    p2= Process(target=crunch_number)
+    p1.start()
+    p2.start()
+    p1.join()
+    p2.join()
+    end = time.time()
+    print(f"Total time take : {end - start:.2f} second")
