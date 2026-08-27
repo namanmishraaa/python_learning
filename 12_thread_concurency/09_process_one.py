@@ -1,10 +1,10 @@
-import threading 
+import threading
 import time
 
 def cpu_heavy():
     print(f"Cruching some numbers ...")
     total = 0
-    for i in range(10**7):
+    for i in range(10**9):
         total += i
     print("Done")
 
