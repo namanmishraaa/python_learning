@@ -51,7 +51,7 @@ messages = [
     },
     {
         "role": "user", 
-        "content": "Hey, can you write a code in python that can take n number of arguments and add all the numbers as fast as possible with caching"
+        "content": "Hey, can you write a code in javascript that can take n number of arguments and add all the numbers as fast as possible with caching."
     }
 ]
 
