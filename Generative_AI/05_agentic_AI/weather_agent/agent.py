@@ -2,6 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import requests
 import json
+from agent_output import myOutputFormat
 
 load_dotenv()
 
@@ -70,9 +71,10 @@ def get_weather(city:str):
 
 def llm_call(message):
 
-    response = client.responses.create(
+    response = client.responses.parse(
         model = 'gpt-4o-mini',
-        input = message
+        input = message,
+        text_format = myOutputFormat
     )
     return response
 
@@ -117,7 +119,7 @@ def agent_invoke(message:str):
                         # })
                         # continue
                     if data.get("step") == 'OUTPUT' : print("🤖", end = ' ')
-                    print(data["content"])
+                    print(data.get("content"))
 
 
                 if data.get("step") == 'TOOL_CALL':
@@ -153,9 +155,12 @@ def agent_invoke(message:str):
                 # print("...waiting 10 seconds for next step...")
                 # time.sleep(30)
         
+
         except Exception as e:
             print(f"An error occurred: {e}")
             break
+
+    print(messages)
 
 
 
