@@ -137,6 +137,7 @@ def agent_invoke(message:str):
                             }
                         )
                     })
+                    print(f"⚒️ Tool {tool_to_call} called with input: {tool_input}. Result: {tool_result}")
                     continue
 
 
