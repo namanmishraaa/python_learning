@@ -22,6 +22,7 @@ dependencies = [
     "pydantic>=2.13.5",
     "pypdf>=6.17.0",
     "requests>=2.34.2",
+    "rq>=2.12.0",
     "tiktoken>=0.14.0",
     "torch>=2.14.0",
     "transformers>=5.16.1",
