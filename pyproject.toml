@@ -16,6 +16,7 @@ dependencies = [
     "langchain-openai>=1.6.0",
     "langchain-qdrant>=1.1.0",
     "langchain-text-splitters>=1.1.2",
+    "langgraph>=1.2.11",
     "ollama>=0.6.2",
     "openai>=3.6.0",
     "psutil>=7.2.2",
