@@ -48,7 +48,7 @@ flowchart LR
 | `fluent_python.pdf` | Source knowledge document. |
 | `index.py` | Loads, chunks, embeds, and stores PDF content. |
 | `chat.py` | Reads the existing collection, retrieves context, and generates an answer. |
-| `docker-compose.yml` | Starts the local Qdrant vector database. |
+| `../../docker-compose.yml` | Starts the shared Ollama, Qdrant, and Valkey services. |
 | Qdrant | Stores vectors, chunk text, and document metadata. |
 | Ollama | Creates embeddings and generates the final response. |
 | LangChain integrations | Connect the loader, splitter, embeddings, and Qdrant store. |
@@ -166,12 +166,14 @@ The embedding model must match between indexing and querying. If the model chang
 
 ## Run the Example
 
-Run the commands from this directory: `Generative_AI/06_rag`.
+Run the infrastructure command from the repository root, then run the Python commands from this directory.
 
 ### 1. Start Qdrant
 
 ```powershell
-docker compose up -d vector-db
+cd ../..
+docker compose up -d qdrant ollama
+cd Generative_AI/06_rag
 ```
 
 Qdrant provides:
@@ -247,13 +249,13 @@ The page metadata is useful for directing the user back to the original PDF. The
 - Retrieval uses the default `similarity_search` settings. The number of results, metadata filters, score threshold, and reranking are not configured yet.
 - The system prompt requests grounded answers, but prompt instructions alone do not guarantee that every answer is fully supported by the source.
 - OpenAI imports and calls are retained as commented alternatives; the active implementation uses Ollama.
-- `docker-compose.yml` starts Qdrant only. Ollama runs separately on the host.
+- The root `docker-compose.yml` starts Qdrant and Ollama in Docker.
 
 ## Troubleshooting
 
 | Symptom | Likely cause | Check |
 | --- | --- | --- |
-| Connection refused on port `6333` | Qdrant is not running | Run `docker compose up -d vector-db` and inspect `docker compose logs vector-db`. |
+| Connection refused on port `6333` | Qdrant is not running | From the repository root, run `docker compose up -d qdrant` and inspect `docker compose logs qdrant`. |
 | Collection not found | Indexing has not completed | Run `python index.py` and confirm the collection name is `learning_rag_ollama`. |
 | Ollama connection error | Ollama is stopped or the URL is wrong | Check `OLLAMA_BASE_URL` and that Ollama responds locally. |
 | Embedding model error | Model is missing or differs from the indexed model | Pull `qwen3-embedding:0.6b` and use the same model for both stages. |

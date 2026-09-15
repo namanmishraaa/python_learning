@@ -45,7 +45,7 @@ flowchart LR
 | `server.py` | Defines the FastAPI health, submit, and status endpoints. |
 | `client/rq_client.py` | Creates the RQ queue and connects it to Valkey on `localhost:6379`. |
 | `queues/worker.py` | Connects to Ollama and Qdrant, retrieves context, and generates the answer. |
-| `docker-compose.yml` | Starts Valkey, the queue broker and RQ job storage backend. |
+| `../../docker-compose.yml` | Starts the shared Ollama, Qdrant, and Valkey services. |
 | `main.py` | Starts the FastAPI application with Uvicorn on port `8000`. |
 | Qdrant | Stores embedded document chunks and their metadata. |
 | Ollama | Provides both the embedding model and the chat-generation model. |
@@ -139,7 +139,7 @@ The current status endpoint returns the RQ status for unfinished jobs. For a fin
 - A Qdrant instance running at `http://localhost:6333`.
 - The Qdrant collection `learning_rag_ollama` already populated with document chunks.
 
-> `docker-compose.yml` in this folder starts Valkey only. Qdrant is used by the worker but is not declared in this Compose file.
+> The shared Compose file at the repository root starts Valkey, Qdrant, and Ollama together.
 
 ## Configuration
 
@@ -155,26 +155,19 @@ The variable names are read by `queues/worker.py`. The embedding model must be c
 
 ## Run the System
 
-Run each process from this directory unless noted otherwise.
+Run the infrastructure command from the repository root, then run the Python processes from this directory.
 
 ### 1. Start Valkey
 
 ```powershell
-docker compose up -d valkey
+cd ../..
+docker compose up -d ollama qdrant valkey
+cd Generative_AI/07_rag_queue
 ```
 
 ### 2. Start Qdrant
 
-Start Qdrant separately if it is not already running. A minimal local Docker command is:
-
-```powershell
-docker run -d --name qdrant `
-  -p 6333:6333 `
-  -p 6334:6334 `
-  qdrant/qdrant
-```
-
-Then run the indexing example from `Generative_AI/06_rag/` if the collection has not been created yet. Adjust the PDF path and embedding settings as needed.
+Qdrant is started by the root Compose file. Run the indexing example from `Generative_AI/06_rag/` if the collection has not been created yet. Adjust the PDF path and embedding settings as needed.
 
 ### 3. Start an RQ worker
 
